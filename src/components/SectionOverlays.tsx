@@ -172,6 +172,9 @@ function ProcessIcon({ className }: { className?: string }) {
 export function HeroOverlay({ onExplore }: { onExplore: () => void }) {
   return (
     <div className="layer hero-layer">
+      <div className="hero-wordmark" aria-hidden="true">
+        <span>ROSU</span>
+      </div>
       <div className="hero">
         <p className="eyebrow hero__eyebrow">{hero.eyebrow}</p>
         <h1 className="hero__title">{hero.title}</h1>

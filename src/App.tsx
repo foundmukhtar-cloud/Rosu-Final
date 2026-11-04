@@ -16,6 +16,7 @@ import {
   ValuationMethodOverlay,
 } from './components/SectionOverlays';
 import { coverAt, heroUadCover } from './lib/booklet';
+import { heroWordmarkTrack } from './lib/heroWordmark';
 import {
   audience,
   closing,
@@ -41,9 +42,9 @@ import {
 
 type Mode = 'motion' | 'still';
 
-const continuation: { sequence: Sequence; travelVh: number }[] = [
-  { sequence: penthouseLounge, travelVh: 280 }, // Segment 1: Stakeholders / 5 Plinths
-  { sequence: gallery, travelVh: 280 }, // Segment 2: People / Technology / Process
+const continuation: { sequence: Sequence; travelVh: number; holdStart?: number }[] = [
+  { sequence: penthouseLounge, travelVh: 280, holdStart: 0.64 }, // Segment 1: Stakeholders / 5 Plinths
+  { sequence: gallery, travelVh: 280, holdStart: 0.52 }, // Segment 2: People / Technology / Process
   { sequence: regionalExpertise, travelVh: 280 }, // Segment 3: Regional (Upstate & Hudson Valley)
   { sequence: newYorkContinuation, travelVh: 280 }, // Segment 4: Regional (Hudson to Central NY)
   { sequence: newYorkContinuation2, travelVh: 280 }, // Segment 5: Central NY to NYC
@@ -130,6 +131,7 @@ function MotionJourney({
       anchorId="approach"
       anchorAt={0.923}
       coverTrack={heroUadCover}
+      wordmarkTrack={heroWordmarkTrack}
     >
       {/* Chapter 0: Hero */}
       <HeroOverlay onExplore={onExplore} />

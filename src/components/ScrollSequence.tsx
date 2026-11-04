@@ -1,8 +1,9 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
 import { assetUrl, frameUrl, type CoverKeyframe, type Sequence } from '../lib/frames';
+import { heroWordmarkAt, type WordmarkKeyframe } from '../lib/heroWordmark';
 import { FrameLoader } from '../lib/loader';
 
-type Continuation = { sequence: Sequence; travelVh: number };
+type Continuation = { sequence: Sequence; travelVh: number; holdStart?: number };
 
 type ScrollSequenceProps = {
   sequence: Sequence;
@@ -13,6 +14,7 @@ type ScrollSequenceProps = {
   anchorId?: string;
   anchorAt?: number;
   coverTrack?: CoverKeyframe[];
+  wordmarkTrack?: WordmarkKeyframe[];
   children: ReactNode;
 };
 
@@ -35,6 +37,7 @@ export function ScrollSequence({
   anchorId,
   anchorAt = 0.68,
   coverTrack,
+  wordmarkTrack,
   children,
 }: ScrollSequenceProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -60,6 +63,7 @@ export function ScrollSequence({
         : [continuation]
       : [];
     const scenes: Sequence[] = [sequence, ...chain.map((entry) => entry.sequence)];
+    const holds = [1, ...chain.map((entry) => entry.holdStart ?? 1)];
 
     const loaders = scenes.map(
       (scene) =>
@@ -107,6 +111,18 @@ export function ScrollSequence({
       stage.style.setProperty('--cover-h', `${h * geometry.dh}px`);
     }
 
+    function applyWordmark(progress: number) {
+      if (!wordmarkTrack || wordmarkTrack.length === 0) return;
+      const key = heroWordmarkAt(progress);
+      stage.style.setProperty('--wm-x', key.x.toFixed(4));
+      stage.style.setProperty('--wm-y', key.y.toFixed(4));
+      stage.style.setProperty('--wm-w', key.w.toFixed(4));
+      stage.style.setProperty('--wm-fs', key.fs.toFixed(4));
+      stage.style.setProperty('--wm-tilt', `${key.tilt.toFixed(2)}deg`);
+      stage.style.setProperty('--wm-rot', `${key.rot.toFixed(2)}deg`);
+      stage.style.setProperty('--wm-skew', `${key.skew.toFixed(2)}deg`);
+    }
+
     function paint(image: HTMLImageElement, alpha: number, clear: boolean) {
       if (cssWidth === 0 || cssHeight === 0) return;
       ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
@@ -142,7 +158,9 @@ export function ScrollSequence({
     function render(segment: number, progress: number, force = false) {
       const scene = scenes[segment];
       const loader = loaders[segment];
-      const index = frameIndexFor(progress, scene.frameCount);
+      const hold = holds[segment] ?? 1;
+      const frameProgress = hold < 1 ? Math.min(1, progress / hold) : progress;
+      const index = frameIndexFor(frameProgress, scene.frameCount);
       const hasNext = segment < chain.length;
       const blend =
         hasNext && progress >= CROSSFADE_START
@@ -180,7 +198,7 @@ export function ScrollSequence({
     };
 
     const applyPhase = (progress: number) => {
-      const phase = progress < 0.34 ? 'hero' : progress >= 0.44 ? 'uad' : 'transition';
+      const phase = progress < 0.34 ? 'hero' : progress >= 0.4 ? 'uad' : 'transition';
       if (stage.dataset.phase !== phase) stage.dataset.phase = phase;
     };
 
@@ -219,7 +237,10 @@ export function ScrollSequence({
         stage.style.setProperty('--pn', segmentProgress.toFixed(4));
         stage.style.setProperty('--p', overall.toFixed(4));
         applyPhase(overall);
-        if (segment === 0) applyCover(segmentProgress);
+        if (segment === 0) {
+          applyCover(segmentProgress);
+          applyWordmark(segmentProgress);
+        }
         if (segment < chain.length && !primed[segment] && segmentProgress > 0.55) {
           loaders[segment + 1].preloadCritical();
           primed[segment] = true;
@@ -248,6 +269,7 @@ export function ScrollSequence({
     loaders[0].requestFocus(0);
     measure();
     applyPhase(0);
+    applyWordmark(0);
     kick();
 
     const resizeObserver = new ResizeObserver(() => {
@@ -269,7 +291,7 @@ export function ScrollSequence({
       window.removeEventListener('orientationchange', kick);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [sequence, continuation, coverTrack, heightVh]);
+  }, [sequence, continuation, coverTrack, wordmarkTrack, heightVh]);
 
   const style = {
     '--journey-vh':

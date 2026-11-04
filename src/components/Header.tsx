@@ -8,6 +8,13 @@ type HeaderProps = {
 export function Header({ onRequest, onNavigate }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeNav, setActiveNav] = useState<'appraisal' | 'approach' | 'contact'>('appraisal');
+  const [overHero, setOverHero] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return (
+      !window.matchMedia('(max-width: 767px)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
+  });
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -25,22 +32,27 @@ export function Header({ onRequest, onNavigate }: HeaderProps) {
         const contactRect = contactEl.getBoundingClientRect();
         if (contactRect.top <= window.innerHeight * 0.5) {
           setActiveNav('contact');
+          setOverHero(false);
           return;
         }
       }
 
       const journeyEl = document.getElementById('appraisal');
-      if (journeyEl) {
+      if (!journeyEl) return;
+
+      if (journeyEl.classList.contains('journey')) {
         const journeyRect = journeyEl.getBoundingClientRect();
         const stickyHeight = window.innerHeight;
         const scrolledVh = (-journeyRect.top / stickyHeight) * 100;
-        // Segment 2 (Gallery / Approach) begins around 500vh
-        if (scrolledVh >= 450) {
-          setActiveNav('approach');
-        } else {
-          setActiveNav('appraisal');
-        }
+        setOverHero(scrolledVh < 560);
+        setActiveNav(scrolledVh >= 560 ? 'approach' : 'appraisal');
+        return;
       }
+
+      setOverHero(false);
+      const approachEl = document.getElementById('approach');
+      const approachTop = approachEl?.getBoundingClientRect().top ?? Infinity;
+      setActiveNav(approachTop <= window.innerHeight * 0.55 ? 'approach' : 'appraisal');
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -61,7 +73,10 @@ export function Header({ onRequest, onNavigate }: HeaderProps) {
   };
 
   return (
-    <header className="site-header" role="banner">
+    <header
+      className={`site-header${overHero ? ' site-header--over-hero' : ''}`}
+      role="banner"
+    >
       <div className="site-header__inner">
         <a
           className="brand"

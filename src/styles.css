@@ -134,11 +134,58 @@ button {
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 60;
-  background: rgba(246, 242, 233, 0.94);
-  border-bottom: 1px solid rgba(18, 42, 69, 0.08);
-  backdrop-filter: blur(14px) saturate(1.05);
-  -webkit-backdrop-filter: blur(14px) saturate(1.05);
-  transition: background 0.3s ease, border-color 0.3s ease;
+  background: linear-gradient(
+    to bottom,
+    rgba(246, 242, 233, 0.78) 0%,
+    rgba(246, 242, 233, 0.3) 58%,
+    rgba(246, 242, 233, 0) 100%
+  );
+  border-bottom: 1px solid transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+}
+
+.site-header--over-hero {
+  background: linear-gradient(
+    to bottom,
+    rgba(13, 31, 51, 0.58) 0%,
+    rgba(13, 31, 51, 0.24) 56%,
+    rgba(13, 31, 51, 0) 100%
+  );
+}
+
+.site-header--over-hero .brand,
+.site-header--over-hero .site-nav > a,
+.site-header--over-hero .menu-toggle {
+  color: var(--ivory);
+}
+
+.site-header--over-hero .site-nav > a {
+  color: rgba(246, 242, 233, 0.78);
+}
+
+.site-header--over-hero .site-nav > a:hover,
+.site-header--over-hero .site-nav > a.site-nav__link--active {
+  color: var(--ivory);
+  border-bottom-color: var(--bronze-soft);
+}
+
+.site-header--over-hero .menu-toggle {
+  border-color: rgba(246, 242, 233, 0.4);
+}
+
+.site-header--over-hero .header__cta {
+  background: rgba(246, 242, 233, 0.12);
+  border-color: rgba(246, 242, 233, 0.45);
+  color: var(--ivory);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.site-header--over-hero .header__cta:hover {
+  background: rgba(246, 242, 233, 0.22);
+  border-color: rgba(246, 242, 233, 0.7);
 }
 
 .site-header__inner {
@@ -325,8 +372,8 @@ button {
 
 .journey__sticky[data-segment='a'][data-phase='uad'] .uad-layer {
   opacity: calc(
-    clamp(0, calc((var(--p, 0) - 0.44) * 9.5), 1) *
-    clamp(0, calc((0.96 - var(--p, 0)) * 14), 1)
+    clamp(0, calc((var(--p, 0) - 0.4) * 10), 1) *
+    clamp(0, calc((0.94 - var(--p, 0)) * 22), 1)
   );
   visibility: visible;
   pointer-events: auto;
@@ -340,8 +387,8 @@ button {
 /* Appears when camera pulls back and rests in the navy room */
 .journey__sticky[data-segment='b'] .audience-layer {
   opacity: calc(
-    clamp(0, calc((var(--pn, 0) - 0.25) * 4), 1) *
-    clamp(0, calc((0.98 - var(--pn, 0)) * 6), 1)
+    clamp(0, calc((var(--pn, 0) - 0.44) * 10), 1) *
+    clamp(0, calc((1 - var(--pn, 0)) * 28), 1)
   );
   visibility: visible;
   pointer-events: auto;
@@ -351,8 +398,8 @@ button {
 /* Appears when camera glides into the gallery in front of the 3 pedestals */
 .journey__sticky[data-segment='c'] .foundation-layer {
   opacity: calc(
-    clamp(0, calc((var(--pn, 0) - 0.35) * 4), 1) *
-    clamp(0, calc((0.98 - var(--pn, 0)) * 6), 1)
+    clamp(0, calc((var(--pn, 0) - 0.02) * 9), 1) *
+    clamp(0, calc((1 - var(--pn, 0)) * 22), 1)
   );
   visibility: visible;
   pointer-events: auto;
@@ -361,27 +408,27 @@ button {
 /* Segment D & E: Regional Upstate (Hudson Valley) */
 .journey__sticky[data-segment='d'] .regional-upstate-layer {
   opacity: calc(
-    clamp(0, calc((var(--pn, 0) - 0.02) * 6), 1) *
-    clamp(0, calc((0.96 - var(--pn, 0)) * 6), 1)
+    clamp(0, calc((var(--pn, 0) - 0.02) * 9), 1) *
+    clamp(0, calc((0.99 - var(--pn, 0)) * 30), 1)
   );
   visibility: visible;
 }
 
 .journey__sticky[data-segment='e'] .regional-upstate-layer {
-  opacity: calc(clamp(0, calc((0.44 - var(--pn, 0)) * 6), 1));
+  opacity: calc(clamp(0, calc((0.48 - var(--pn, 0)) * 10), 1));
   visibility: visible;
 }
 
 /* Segment E & F: Regional Central NY (Craftsman snow) */
 .journey__sticky[data-segment='e'] .regional-central-layer {
-  opacity: calc(clamp(0, calc((var(--pn, 0) - 0.50) * 6), 1));
+  opacity: calc(clamp(0, calc((var(--pn, 0) - 0.48) * 10), 1));
   visibility: visible;
 }
 
 .journey__sticky[data-segment='f'] .regional-central-layer {
   opacity: calc(
-    clamp(0, calc((var(--pn, 0) - 0.02) * 6), 1) *
-    clamp(0, calc((0.85 - var(--pn, 0)) * 6), 1)
+    clamp(0, calc((var(--pn, 0) - 0.02) * 9), 1) *
+    clamp(0, calc((0.99 - var(--pn, 0)) * 30), 1)
   );
   visibility: visible;
 }
@@ -389,8 +436,8 @@ button {
 /* Segment G: NYC Property Types */
 .journey__sticky[data-segment='g'] .property-types-layer {
   opacity: calc(
-    clamp(0, calc((var(--pn, 0) - 0.02) * 6), 1) *
-    clamp(0, calc((0.96 - var(--pn, 0)) * 6), 1)
+    clamp(0, calc((var(--pn, 0) - 0.02) * 9), 1) *
+    clamp(0, calc((0.99 - var(--pn, 0)) * 30), 1)
   );
   visibility: visible;
   pointer-events: auto;
@@ -399,16 +446,16 @@ button {
 /* Segment H: High-Rise (Early) & Valuation Method (Late) */
 .journey__sticky[data-segment='h'] .city-highrise-layer {
   opacity: calc(
-    clamp(0, calc((var(--pn, 0) - 0.02) * 6), 1) *
-    clamp(0, calc((0.46 - var(--pn, 0)) * 8), 1)
+    clamp(0, calc((var(--pn, 0) - 0.02) * 9), 1) *
+    clamp(0, calc((0.48 - var(--pn, 0)) * 12), 1)
   );
   visibility: visible;
 }
 
 .journey__sticky[data-segment='h'] .valuation-method-layer {
   opacity: calc(
-    clamp(0, calc((var(--pn, 0) - 0.48) * 8), 1) *
-    clamp(0, calc((0.98 - var(--pn, 0)) * 6), 1)
+    clamp(0, calc((var(--pn, 0) - 0.48) * 10), 1) *
+    clamp(0, calc((0.99 - var(--pn, 0)) * 30), 1)
   );
   visibility: visible;
   pointer-events: auto;
@@ -438,7 +485,41 @@ button {
   will-change: opacity, transform;
 }
 
+/* Etched ROSU wordmark riding the limestone lintel in the opening shot. */
+.hero-wordmark {
+  position: absolute;
+  left: calc(var(--stage-x, 0px) + var(--stage-w, 100vw) * var(--wm-x, 0.428));
+  top: calc(var(--stage-y, 0px) + var(--stage-h, 100vh) * var(--wm-y, 0.528));
+  width: calc(var(--stage-w, 100vw) * var(--wm-w, 0.247));
+  display: flex;
+  justify-content: center;
+  z-index: 0;
+  pointer-events: none;
+  color: rgba(18, 42, 69, 0.86);
+  text-shadow: 0 0 1px rgba(246, 242, 233, 0.4), 0 1px 0 rgba(255, 255, 255, 0.16);
+  opacity: clamp(0, calc((0.3 - var(--p, 0)) * 5), 0.28);
+  transform: perspective(calc(var(--stage-w, 100vw) * 0.9))
+    rotateX(var(--wm-tilt, 13deg)) rotateZ(var(--wm-rot, -1.2deg))
+    skewX(var(--wm-skew, -5deg))
+    translate3d(0, calc(var(--p, 0) * -10px), 0);
+  transform-origin: center bottom;
+  will-change: opacity, transform, left, top, width;
+}
+
+.hero-wordmark span {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: calc(var(--stage-w, 100vw) * var(--wm-fs, 0.06));
+  line-height: 0.72;
+  letter-spacing: 0.16em;
+  text-indent: 0.16em;
+  white-space: nowrap;
+}
+
 .hero {
+  position: relative;
+  z-index: 1;
   max-width: 660px;
 }
 
@@ -734,30 +815,29 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 6px;
   background: transparent;
   color: var(--navy);
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: 0;
   cursor: pointer;
   pointer-events: auto;
-  transition: all 0.25s ease;
-  padding: 6px;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  padding: 4px 6px;
   text-align: center;
 }
 
 .plinth-btn:hover {
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(4px);
-  border-color: rgba(165, 133, 92, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px -4px rgba(13, 31, 51, 0.25);
+  background: rgba(246, 242, 233, 0.18);
+  backdrop-filter: blur(3px);
+  border-color: rgba(165, 133, 92, 0.32);
+  transform: translateY(-1px);
 }
 
 .plinth-btn:focus-visible {
   outline: 2px solid var(--bronze);
   outline-offset: 2px;
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(246, 242, 233, 0.3);
 }
 
 /* Plinth Coordinates (16:9 Percentages) */
@@ -797,22 +877,25 @@ button {
 }
 
 .plinth-btn__icon {
-  width: clamp(24px, 2.3vw, 32px);
-  height: clamp(24px, 2.3vw, 32px);
+  width: clamp(18px, 1.7vw, 24px);
+  height: clamp(18px, 1.7vw, 24px);
   stroke: var(--navy);
-  transition: transform 0.2s ease;
+  opacity: 0.72;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .plinth-btn:hover .plinth-btn__icon {
-  transform: scale(1.08);
+  transform: scale(1.06);
+  opacity: 0.9;
 }
 
 .plinth-btn__label {
   font-family: var(--sans);
-  font-size: clamp(12px, 1.25vw, 15px);
+  font-size: clamp(9px, 0.78vw, 11px);
   font-weight: 400;
-  letter-spacing: 0.04em;
-  color: var(--navy);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(18, 42, 69, 0.84);
 }
 
 /* Bottom Center Cue Matching Reference Image 5 */
@@ -1292,11 +1375,6 @@ button {
   max-width: 540px;
   box-shadow: 0 16px 36px -12px rgba(13, 31, 51, 0.35);
 }
-  border: 1px solid rgba(165, 133, 92, 0.3);
-  backdrop-filter: blur(12px);
-  max-width: 540px;
-  box-shadow: 0 16px 36px -12px rgba(13, 31, 51, 0.35);
-}
 
 .property-panel__headline {
   margin: 0 0 6px;
@@ -1476,12 +1554,13 @@ button {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(18, 42, 69, 0.3);
+  background: var(--navy);
+  box-shadow: 0 0 0 1.5px rgba(246, 242, 233, 0.72);
   transition: all 0.25s ease;
 }
 
 .journey-progress__step:hover .journey-progress__dot {
-  background: var(--navy);
+  background: var(--bronze);
   transform: scale(1.3);
 }
 
@@ -1507,18 +1586,18 @@ button {
 }
 
 /* Dynamic Active Highlight on Current Step */
-.journey__sticky[data-segment='a'][data-phase='hero'] ~ .journey-progress .journey-progress__step[data-chapter-index='0'] .journey-progress__dot,
-.journey__sticky[data-segment='a'][data-phase='uad'] ~ .journey-progress .journey-progress__step[data-chapter-index='1'] .journey-progress__dot,
-.journey__sticky[data-segment='b'] ~ .journey-progress .journey-progress__step[data-chapter-index='2'] .journey-progress__dot,
-.journey__sticky[data-segment='c'] ~ .journey-progress .journey-progress__step[data-chapter-index='3'] .journey-progress__dot,
-.journey__sticky[data-segment='d'] ~ .journey-progress .journey-progress__step[data-chapter-index='4'] .journey-progress__dot,
-.journey__sticky[data-segment='e'] ~ .journey-progress .journey-progress__step[data-chapter-index='4'] .journey-progress__dot,
-.journey__sticky[data-segment='f'] ~ .journey-progress .journey-progress__step[data-chapter-index='5'] .journey-progress__dot,
-.journey__sticky[data-segment='g'] ~ .journey-progress .journey-progress__step[data-chapter-index='6'] .journey-progress__dot,
-.journey__sticky[data-segment='h'] ~ .journey-progress .journey-progress__step[data-chapter-index='7'] .journey-progress__dot {
-  background: var(--navy);
+.journey__sticky[data-segment='a'][data-phase='hero'] .journey-progress .journey-progress__step[data-chapter-index='0'] .journey-progress__dot,
+.journey__sticky[data-segment='a'][data-phase='uad'] .journey-progress .journey-progress__step[data-chapter-index='1'] .journey-progress__dot,
+.journey__sticky[data-segment='b'] .journey-progress .journey-progress__step[data-chapter-index='2'] .journey-progress__dot,
+.journey__sticky[data-segment='c'] .journey-progress .journey-progress__step[data-chapter-index='3'] .journey-progress__dot,
+.journey__sticky[data-segment='d'] .journey-progress .journey-progress__step[data-chapter-index='4'] .journey-progress__dot,
+.journey__sticky[data-segment='e'] .journey-progress .journey-progress__step[data-chapter-index='5'] .journey-progress__dot,
+.journey__sticky[data-segment='f'] .journey-progress .journey-progress__step[data-chapter-index='5'] .journey-progress__dot,
+.journey__sticky[data-segment='g'] .journey-progress .journey-progress__step[data-chapter-index='6'] .journey-progress__dot,
+.journey__sticky[data-segment='h'] .journey-progress .journey-progress__step[data-chapter-index='7'] .journey-progress__dot {
+  background: var(--bronze);
   transform: scale(1.6);
-  box-shadow: 0 0 0 3px rgba(18, 42, 69, 0.2);
+  box-shadow: 0 0 0 3px rgba(246, 242, 233, 0.5), 0 0 0 4px rgba(18, 42, 69, 0.22);
 }
 
 /* ==========================================================================

@@ -1,0 +1,19 @@
+{
+  "id": "new-york-continuation-3",
+  "title": "New York continuation III",
+  "description": "A third direct continuation of the New York regional camera move, carrying the scene forward without a cut.",
+  "chapters": [
+    "New York"
+  ],
+  "source": "Assets/ezgif-4c55a15441f66be1-png-split.zip",
+  "frameCount": 238,
+  "width": 1280,
+  "height": 720,
+  "startNumber": 1,
+  "digits": 3,
+  "pattern": "ezgif-frame-{index}.webp",
+  "sourcePattern": "ezgif-frame-{index}.png",
+  "directory": "assets/rosu/new-york-continuation-3",
+  "poster": "ezgif-frame-001.webp",
+  "lastFrame": "ezgif-frame-238.webp"
+}

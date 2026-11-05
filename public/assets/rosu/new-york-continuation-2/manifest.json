@@ -1,0 +1,19 @@
+{
+  "id": "new-york-continuation-2",
+  "title": "New York continuation II",
+  "description": "A second direct continuation of the New York regional camera move, carrying the scene forward without a cut.",
+  "chapters": [
+    "New York"
+  ],
+  "source": "Assets/ezgif-8abff9f8296eb104-png-split.zip",
+  "frameCount": 238,
+  "width": 1280,
+  "height": 720,
+  "startNumber": 1,
+  "digits": 3,
+  "pattern": "ezgif-frame-{index}.webp",
+  "sourcePattern": "ezgif-frame-{index}.png",
+  "directory": "assets/rosu/new-york-continuation-2",
+  "poster": "ezgif-frame-001.webp",
+  "lastFrame": "ezgif-frame-238.webp"
+}

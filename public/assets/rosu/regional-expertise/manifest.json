@@ -1,0 +1,19 @@
+{
+  "id": "regional-expertise",
+  "title": "Regional expertise",
+  "description": "The camera moves through New York itself — from Central New York homes to the city’s high-rise core — following the architectural line that links the markets ROSU serves.",
+  "chapters": [
+    "New York"
+  ],
+  "source": "Assets/ezgif-8d72ca0e6e756d03-png-split.zip",
+  "frameCount": 238,
+  "width": 1280,
+  "height": 720,
+  "startNumber": 1,
+  "digits": 3,
+  "pattern": "ezgif-frame-{index}.webp",
+  "sourcePattern": "ezgif-frame-{index}.png",
+  "directory": "assets/rosu/regional-expertise",
+  "poster": "ezgif-frame-001.webp",
+  "lastFrame": "ezgif-frame-238.webp"
+}

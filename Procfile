@@ -1,1 +1,1 @@
-web: node bin/serve-spa.mjs
+web: node bin/serve-spa.mjs $PORT

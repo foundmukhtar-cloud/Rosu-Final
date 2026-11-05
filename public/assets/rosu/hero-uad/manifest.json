@@ -1,0 +1,20 @@
+{
+  "id": "hero-uad",
+  "title": "Skyline to UAD 3.6",
+  "description": "A continuous camera move from the Lower Manhattan skyline at morning light, across the limestone architectural model, through the opening and into the penthouse appraisal scene.",
+  "chapters": [
+    "New York skyline",
+    "UAD 3.6"
+  ],
+  "source": "Assets/ezgif-828b6d0c1a7083cc-png-split.zip",
+  "frameCount": 238,
+  "width": 1280,
+  "height": 720,
+  "startNumber": 1,
+  "digits": 3,
+  "pattern": "ezgif-frame-{index}.webp",
+  "sourcePattern": "ezgif-frame-{index}.png",
+  "directory": "assets/rosu/hero-uad",
+  "poster": "ezgif-frame-001.webp",
+  "lastFrame": "ezgif-frame-238.webp"
+}

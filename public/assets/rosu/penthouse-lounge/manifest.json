@@ -1,0 +1,19 @@
+{
+  "id": "penthouse-lounge",
+  "title": "Penthouse to lounge",
+  "description": "The camera withdraws from the appraisal booklet and the building model, across the penthouse floor, and comes to rest in a navy lounge overlooking the city.",
+  "chapters": [
+    "Penthouse"
+  ],
+  "source": "Assets/ezgif-86cc61827b114774-png-split.zip",
+  "frameCount": 238,
+  "width": 1280,
+  "height": 720,
+  "startNumber": 1,
+  "digits": 3,
+  "pattern": "ezgif-frame-{index}.webp",
+  "sourcePattern": "ezgif-frame-{index}.png",
+  "directory": "assets/rosu/penthouse-lounge",
+  "poster": "ezgif-frame-001.webp",
+  "lastFrame": "ezgif-frame-238.webp"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "gallery",
+  "title": "Lounge to gallery",
+  "description": "From the lounge the camera crosses a marble table holding a glazed architectural model, then moves into a gallery corridor where a consultant works at a desk.",
+  "chapters": [
+    "Gallery"
+  ],
+  "source": "Assets/ezgif-8db394740eeaf22e-png-split.zip",
+  "frameCount": 238,
+  "width": 1280,
+  "height": 720,
+  "startNumber": 1,
+  "digits": 3,
+  "pattern": "ezgif-frame-{index}.webp",
+  "sourcePattern": "ezgif-frame-{index}.png",
+  "directory": "assets/rosu/gallery",
+  "poster": "ezgif-frame-001.webp",
+  "lastFrame": "ezgif-frame-238.webp"
+}

@@ -485,38 +485,6 @@ button {
   will-change: opacity, transform;
 }
 
-/* Etched ROSU wordmark riding the limestone lintel in the opening shot. */
-.hero-wordmark {
-  position: absolute;
-  left: calc(var(--stage-x, 0px) + var(--stage-w, 100vw) * var(--wm-x, 0.428));
-  top: calc(var(--stage-y, 0px) + var(--stage-h, 100vh) * var(--wm-y, 0.528));
-  width: calc(var(--stage-w, 100vw) * var(--wm-w, 0.247));
-  display: flex;
-  justify-content: center;
-  z-index: 0;
-  pointer-events: none;
-  color: rgba(18, 42, 69, 0.86);
-  text-shadow: 0 0 1px rgba(246, 242, 233, 0.4), 0 1px 0 rgba(255, 255, 255, 0.16);
-  opacity: clamp(0, calc((0.3 - var(--p, 0)) * 5), 0.28);
-  transform: perspective(calc(var(--stage-w, 100vw) * 0.9))
-    rotateX(var(--wm-tilt, 13deg)) rotateZ(var(--wm-rot, -1.2deg))
-    skewX(var(--wm-skew, -5deg))
-    translate3d(0, calc(var(--p, 0) * -10px), 0);
-  transform-origin: center bottom;
-  will-change: opacity, transform, left, top, width;
-}
-
-.hero-wordmark span {
-  display: block;
-  font-family: var(--serif);
-  font-weight: 300;
-  font-size: calc(var(--stage-w, 100vw) * var(--wm-fs, 0.06));
-  line-height: 0.72;
-  letter-spacing: 0.16em;
-  text-indent: 0.16em;
-  white-space: nowrap;
-}
-
 .hero {
   position: relative;
   z-index: 1;

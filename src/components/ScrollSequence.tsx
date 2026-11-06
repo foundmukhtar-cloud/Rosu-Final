@@ -1,6 +1,5 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
 import { assetUrl, frameUrl, type CoverKeyframe, type Sequence } from '../lib/frames';
-import { heroWordmarkAt, type WordmarkKeyframe } from '../lib/heroWordmark';
 import { FrameLoader } from '../lib/loader';
 
 type Continuation = { sequence: Sequence; travelVh: number; holdStart?: number };
@@ -14,7 +13,6 @@ type ScrollSequenceProps = {
   anchorId?: string;
   anchorAt?: number;
   coverTrack?: CoverKeyframe[];
-  wordmarkTrack?: WordmarkKeyframe[];
   children: ReactNode;
 };
 
@@ -37,7 +35,6 @@ export function ScrollSequence({
   anchorId,
   anchorAt = 0.68,
   coverTrack,
-  wordmarkTrack,
   children,
 }: ScrollSequenceProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -109,18 +106,6 @@ export function ScrollSequence({
       stage.style.setProperty('--cover-top', `${geometry.dy + y * geometry.dh}px`);
       stage.style.setProperty('--cover-w', `${w * geometry.dw}px`);
       stage.style.setProperty('--cover-h', `${h * geometry.dh}px`);
-    }
-
-    function applyWordmark(progress: number) {
-      if (!wordmarkTrack || wordmarkTrack.length === 0) return;
-      const key = heroWordmarkAt(progress);
-      stage.style.setProperty('--wm-x', key.x.toFixed(4));
-      stage.style.setProperty('--wm-y', key.y.toFixed(4));
-      stage.style.setProperty('--wm-w', key.w.toFixed(4));
-      stage.style.setProperty('--wm-fs', key.fs.toFixed(4));
-      stage.style.setProperty('--wm-tilt', `${key.tilt.toFixed(2)}deg`);
-      stage.style.setProperty('--wm-rot', `${key.rot.toFixed(2)}deg`);
-      stage.style.setProperty('--wm-skew', `${key.skew.toFixed(2)}deg`);
     }
 
     function paint(image: HTMLImageElement, alpha: number, clear: boolean) {
@@ -205,6 +190,7 @@ export function ScrollSequence({
     const tick = () => {
       raf = 0;
       const rect = section.getBoundingClientRect();
+
       const stickyHeight = stage.offsetHeight || window.innerHeight;
       const travelFirst = Math.max(1, ((heightVh - 100) / 100) * stickyHeight);
       const travels = chain.map((entry) => Math.max(1, (entry.travelVh / 100) * stickyHeight));
@@ -239,7 +225,6 @@ export function ScrollSequence({
         applyPhase(overall);
         if (segment === 0) {
           applyCover(segmentProgress);
-          applyWordmark(segmentProgress);
         }
         if (segment < chain.length && !primed[segment] && segmentProgress > 0.55) {
           loaders[segment + 1].preloadCritical();
@@ -269,7 +254,6 @@ export function ScrollSequence({
     loaders[0].requestFocus(0);
     measure();
     applyPhase(0);
-    applyWordmark(0);
     kick();
 
     const resizeObserver = new ResizeObserver(() => {
@@ -291,7 +275,7 @@ export function ScrollSequence({
       window.removeEventListener('orientationchange', kick);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [sequence, continuation, coverTrack, wordmarkTrack, heightVh]);
+  }, [sequence, continuation, coverTrack, heightVh]);
 
   const style = {
     '--journey-vh':

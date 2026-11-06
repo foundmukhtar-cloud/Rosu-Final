@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BookletCover } from './components/BookletCover';
 import { Header } from './components/Header';
+import { LoadingScreen, LoadingScreenSkip } from './lib/loadingScreen';
 import { RequestDialog } from './components/RequestDialog';
 import { ScrollSequence } from './components/ScrollSequence';
 import {
@@ -15,8 +16,7 @@ import {
   UadOverlay,
   ValuationMethodOverlay,
 } from './components/SectionOverlays';
-import { coverAt, heroUadCover } from './lib/booklet';
-import { heroWordmarkTrack } from './lib/heroWordmark';
+import { coverAt } from './lib/booklet';
 import {
   audience,
   closing,
@@ -43,30 +43,25 @@ import {
 type Mode = 'motion' | 'still';
 
 const continuation: { sequence: Sequence; travelVh: number; holdStart?: number }[] = [
-  { sequence: penthouseLounge, travelVh: 280, holdStart: 0.64 }, // Segment 1: Stakeholders / 5 Plinths
-  { sequence: gallery, travelVh: 280, holdStart: 0.52 }, // Segment 2: People / Technology / Process
-  { sequence: regionalExpertise, travelVh: 280 }, // Segment 3: Regional (Upstate & Hudson Valley)
-  { sequence: newYorkContinuation, travelVh: 280 }, // Segment 4: Regional (Hudson to Central NY)
-  { sequence: newYorkContinuation2, travelVh: 280 }, // Segment 5: Central NY to NYC
-  { sequence: newYorkContinuation3, travelVh: 280 }, // Segment 6: NYC Property Types
-  { sequence: newYorkContinuation4, travelVh: 280 }, // Segment 7: High-rise & Defensible Value
+  { sequence: penthouseLounge, travelVh: 280, holdStart: 0.64 },
+  { sequence: gallery, travelVh: 280, holdStart: 0.52 },
+  { sequence: regionalExpertise, travelVh: 280 },
+  { sequence: newYorkContinuation, travelVh: 280 },
+  { sequence: newYorkContinuation2, travelVh: 280 },
+  { sequence: newYorkContinuation3, travelVh: 280 },
+  { sequence: newYorkContinuation4, travelVh: 280 },
 ];
 
-function initialMode(): Mode {
-  if (typeof window === 'undefined') return 'still';
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const small = window.matchMedia('(max-width: 767px)').matches;
-  return reduced || small ? 'still' : 'motion';
-}
-
 function useExperienceMode(): Mode {
-  const [mode, setMode] = useState<Mode>(initialMode);
+  const [mode, setMode] = useState<Mode>('still');
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     const small = window.matchMedia('(max-width: 767px)');
     const update = () =>
       setMode(reduced.matches || small.matches ? 'still' : 'motion');
+    update();
     reduced.addEventListener('change', update);
     small.addEventListener('change', update);
     return () => {
@@ -101,7 +96,6 @@ function scrollToTarget(targetId: string) {
     return;
   }
   if (targetId === 'approach') {
-    // Gallery / Three Pillars section
     scrollToVh(560);
     return;
   }
@@ -130,38 +124,27 @@ function MotionJourney({
       id="appraisal"
       anchorId="approach"
       anchorAt={0.923}
-      coverTrack={heroUadCover}
-      wordmarkTrack={heroWordmarkTrack}
     >
-      {/* Chapter 0: Hero */}
       <HeroOverlay onExplore={onExplore} />
 
-      {/* Chapter 1: UAD 3.6 & Live Booklet Cover */}
       <div className="booklet-layer">
         <BookletCover />
       </div>
       <UadOverlay onRequest={onRequest} />
 
-      {/* Chapter 2: Stakeholders / 5 Plinths on Navy Wall */}
       <AudienceOverlay onRequestRole={onRequestRole} />
 
-      {/* Chapter 3: People / Technology / Process (Gallery) */}
       <FoundationOverlay onLearnMore={onExplore} />
 
-      {/* Chapter 4 & 5: Regional Architecture (Hudson Valley & Central NY) */}
       <RegionalUpstateOverlay />
       <RegionalCentralOverlay />
 
-      {/* Chapter 6: NYC Property Types (Brownstones to Condos) */}
       <PropertyTypesOverlay />
 
-      {/* Chapter 7A: NYC High-Rise Valuation */}
       <CityHighriseOverlay />
 
-      {/* Chapter 7B: Valuation Method (Defensible Value & Report Table) */}
       <ValuationMethodOverlay onRequest={onRequest} />
 
-      {/* Discreet Overall Journey Progress Navigation */}
       <JourneyProgress onJumpToVh={onJumpToVh} />
     </ScrollSequence>
   );
@@ -191,7 +174,6 @@ function StillJourney({
 
   return (
     <div className="still-container">
-      {/* 1. Hero */}
       <section className="still-hero" id="appraisal" aria-labelledby="still-hero-title">
         <img
           className="still-hero__image"
@@ -211,7 +193,6 @@ function StillJourney({
         </div>
       </section>
 
-      {/* 2. UAD 3.6 */}
       <section className="still-uad" id="uad-section" aria-labelledby="still-uad-title">
         <figure className="still-uad__figure">
           <img
@@ -237,7 +218,6 @@ function StillJourney({
         </div>
       </section>
 
-      {/* 3. Valuation Audience / 5 Plinths on Navy Background */}
       <section className="still-section still-section--navy" id="audience" aria-labelledby="still-audience-title">
         <figure className="still-section__media">
           <img
@@ -256,7 +236,6 @@ function StillJourney({
             <p className="navy-wall__subtitle">{audience.subtitle}</p>
           </div>
 
-          {/* 5 Real HTML Buttons Stacked for Mobile */}
           <div className="still-plinths-grid" role="group" aria-label="Valuation Stakeholders">
             {audience.options.map((opt) => (
               <button
@@ -287,7 +266,6 @@ function StillJourney({
         </div>
       </section>
 
-      {/* 4. People / Technology / Process */}
       <section className="still-section" id="approach" aria-labelledby="still-foundation-title">
         <figure className="still-section__media">
           <img
@@ -335,7 +313,6 @@ function StillJourney({
         </div>
       </section>
 
-      {/* 5. Regional Architecture: Upstate & Central NY */}
       <section className="still-section" id="regional" aria-labelledby="still-regional-title">
         <figure className="still-section__media still-region">
           <img
@@ -370,7 +347,6 @@ function StillJourney({
         </figure>
       </section>
 
-      {/* 6. Property Types */}
       <section className="still-section" id="property-types" aria-labelledby="still-types-title">
         <figure className="still-section__media">
           <img
@@ -416,7 +392,6 @@ function StillJourney({
         </div>
       </section>
 
-      {/* 7. Valuation Method & Defensible Value */}
       <section className="still-section" id="valuation-method" aria-labelledby="still-method-title">
         <figure className="still-section__media">
           <img
@@ -490,6 +465,34 @@ export default function App() {
     setRequestOpen(true);
   };
 
+  const [loadingOpen, setLoadingOpen] = useState(true);
+  const loadingLiveRef = useRef<HTMLDivElement | null>(null);
+
+  const announceLoading = (text: string) => {
+    if (loadingLiveRef.current) {
+      loadingLiveRef.current.textContent = text;
+    }
+  };
+
+  const skipLoading = () => {
+    setLoadingOpen(false);
+    announceLoading('Entering the site. Content continues to load in the background.');
+  };
+
+  useEffect(() => {
+    if (!loadingOpen) return;
+    if (mode !== 'motion') {
+      setLoadingOpen(false);
+      return;
+    }
+    announceLoading('Preparing your experience');
+    return () => {
+      if (!loadingOpen) {
+        announceLoading('');
+      }
+    };
+  }, [loadingOpen, mode]);
+
   return (
     <div id="top">
       <a className="skip-link" href="#main">
@@ -533,6 +536,16 @@ export default function App() {
           </p>
         </div>
       </footer>
+
+      {loadingOpen && mode === 'motion' && (
+        <LoadingScreen
+          status="Preparing your experience"
+          announce="Preparing your experience"
+          containerRef={loadingLiveRef}
+        >
+          <LoadingScreenSkip onSkip={skipLoading} />
+        </LoadingScreen>
+      )}
 
       <RequestDialog
         open={requestOpen}

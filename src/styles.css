@@ -4,24 +4,24 @@
 
 /* ---------- Tokens ---------- */
 :root {
-  /* Palette: warm high-contrast editorial with a restrained accent */
-  --ivory: #f5efdf;
-  --ivory-soft: #f8f3e6;
-  --ivory-muted: #e8e0ca;
-  --paper: #f6f2e9;
-  --limestone: #c4b089;
-  --limestone-light: #dcc9a6;
+  /* Palette: warm editorial, higher contrast, restrained accent */
+  --ivory: #f4edd9;
+  --ivory-soft: #f7f0da;
+  --ivory-muted: #e6dab8;
+  --paper: #f4edd9;
+  --limestone: #b99766;
+  --limestone-light: #d4bd8d;
   --navy: #142a47;
-  --navy-deep: #0b1628;
-  --navy-soft: #24405e;
-  --slate: #4c5561;
-  --slate-dark: #2d343f;
-  --forest: #243a2e;
-  --forest-light: #32493a;
-  --bronze: #8f6a3a;
-  --bronze-soft: #b68d5a;
-  --rule: rgba(20, 42, 71, 0.18);
-  --rule-light: rgba(255, 255, 255, 0.28);
+  --navy-deep: #08111d;
+  --navy-soft: #1f3c5e;
+  --slate: #3f4752;
+  --slate-dark: #282e38;
+  --forest: #22382b;
+  --forest-light: #314937;
+  --bronze: #825a2d;
+  --bronze-soft: #b08454;
+  --rule: rgba(20, 42, 71, 0.26);
+  --rule-light: rgba(255, 255, 255, 0.32);
 
   /* Typography */
   --serif: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
@@ -613,40 +613,42 @@ button {
 
 .cover-line--eyebrow {
   max-width: 100%;
-  font-size: clamp(7px, calc(var(--cover-w, 200px) * 0.045), 13px);
+  font-size: clamp(8px, calc(var(--cover-w, 200px) * 0.048), 14px);
   letter-spacing: 0.13em;
   line-height: 1.5;
   text-transform: uppercase;
-  color: var(--bronze);
-  font-weight: 500;
+  color: var(--navy);
+  font-weight: 600;
+  text-shadow: 0 1px 0 rgba(247, 240, 218, 0.6);
 }
 
 .cover-line--title {
-  margin-top: 18px;
+  margin-top: 22px;
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(22px, calc(var(--cover-w, 200px) * 0.3), 68px);
-  line-height: 1.02;
+  font-size: clamp(24px, calc(var(--cover-w, 200px) * 0.31), 72px);
+  line-height: 1.01;
   letter-spacing: -0.02em;
   color: var(--navy-deep);
-  text-shadow: 0 1px 0 rgba(246, 242, 233, 0.55);
+  text-shadow: 0 1px 0 rgba(247, 240, 218, 0.7);
 }
 
 .cover-rule {
   display: block;
-  width: 52%;
+  width: 56%;
   height: 1px;
-  margin: 22px 0;
-  background: var(--bronze);
-  box-shadow: 0 0 0 1px rgba(246, 242, 233, 0.55);
+  margin: 26px 0;
+  background: var(--navy-soft);
+  box-shadow: 0 0 0 1px rgba(247, 240, 218, 0.65);
 }
 
 .cover-line--foot {
-  font-size: clamp(7px, calc(var(--cover-w, 200px) * 0.048), 12px);
+  font-size: clamp(8px, calc(var(--cover-w, 200px) * 0.05), 13px);
   letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--slate-dark);
-  font-weight: 500;
+  font-weight: 600;
+  text-shadow: 0 1px 0 rgba(247, 240, 218, 0.6);
 }
 
 .booklet-cover--still .cover-line {
@@ -1103,27 +1105,28 @@ button {
 
 .foundation__eyebrow {
   margin-bottom: clamp(10px, 1.4vh, 14px);
-  color: var(--bronze);
-  letter-spacing: 0.13em;
-  font-weight: 500;
+  color: var(--navy-soft);
+  letter-spacing: 0.14em;
+  font-weight: 600;
 }
 
 .foundation__title {
   margin: 0;
   font-family: var(--serif);
-  font-weight: 300;
-  font-size: clamp(3rem, 5.5vw, 5.5rem);
-  line-height: 0.95;
+  font-weight: 400;
+  font-size: clamp(3.1rem, 5.6vw, 5.8rem);
+  line-height: 0.94;
   letter-spacing: -0.025em;
-  color: var(--navy);
+  color: var(--navy-deep);
+  text-shadow: 0 1px 0 rgba(247, 240, 218, 0.5);
 }
 
 .foundation__subtitle {
   margin: clamp(10px, 1.6vh, 14px) 0 0;
-  font-size: clamp(15px, 1.2vw, 17px);
+  font-size: clamp(15px, 1.22vw, 17px);
   line-height: 1.55;
-  color: var(--navy);
-  max-width: 34ch;
+  color: var(--navy-deep);
+  max-width: 36ch;
 }
 
 .foundation__link {
@@ -1248,8 +1251,9 @@ button {
 
 .region__eyebrow {
   margin-bottom: clamp(10px, 1.4vh, 14px);
-  color: var(--bronze);
-  letter-spacing: 0.13em;
+  color: var(--navy-soft);
+  letter-spacing: 0.14em;
+  font-weight: 600;
 }
 
 .region__title {
@@ -1260,14 +1264,15 @@ button {
   line-height: 1;
   letter-spacing: -0.02em;
   color: var(--navy-deep);
+  text-shadow: 0 1px 0 rgba(247, 240, 218, 0.5);
 }
 
 .region__body {
   margin: clamp(10px, 1.6vh, 14px) 0 0;
-  max-width: 42ch;
-  font-size: clamp(15px, 1.18vw, 17px);
+  max-width: 44ch;
+  font-size: clamp(15px, 1.2vw, 17px);
   line-height: 1.55;
-  color: var(--navy);
+  color: var(--navy-deep);
 }
 
 /* ---------- Minimal regional expertise labels ---------- */
@@ -1292,7 +1297,7 @@ button {
   gap: 5px;
   font-size: clamp(12px, 1.05vw, 14px);
   line-height: 1.45;
-  color: var(--slate-dark);
+  color: var(--navy-deep);
   max-width: 48ch;
 }
 
@@ -1302,6 +1307,7 @@ button {
   letter-spacing: -0.01em;
   font-size: clamp(13px, 1.1vw, 15px);
   color: var(--navy-deep);
+  text-shadow: 0 1px 0 rgba(247, 240, 218, 0.5);
 }
 
 .region-expertise-label__points {
@@ -1322,7 +1328,7 @@ button {
 .region-expertise-label__point::before {
   content: '·';
   margin-right: 7px;
-  color: var(--bronze);
+  color: var(--navy-deep);
 }
 
 /* Minimal scene cues */
@@ -1338,10 +1344,11 @@ button {
 }
 
 .scene-cue__label {
-  font-size: 9.5px;
+  font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(20, 42, 71, 0.82);
+  color: var(--navy-soft);
+  font-weight: 600;
 }
 
 .scene-cue--center {
@@ -1359,18 +1366,18 @@ button {
 }
 
 .scene-cue__track--line {
-  width: 110px;
+  width: 120px;
   height: 1px;
-  background: rgba(20, 42, 71, 0.32);
+  background: rgba(20, 42, 71, 0.4);
   position: relative;
 }
 
 .scene-cue__bar {
   position: absolute;
   left: 34%;
-  width: 34px;
-  height: 1px;
-  background: var(--navy);
+  width: 36px;
+  height: 2px;
+  background: var(--navy-deep);
   box-shadow: 0 0 0 1px var(--ivory);
 }
 

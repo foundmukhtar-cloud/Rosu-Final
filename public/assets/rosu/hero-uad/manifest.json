@@ -12,9 +12,9 @@
   "height": 720,
   "startNumber": 1,
   "digits": 3,
-  "pattern": "ezgif-frame-{index}.webp",
-  "sourcePattern": "ezgif-frame-{index}.png",
+  "pattern": "web/ezgif-frame-{index}.webp",
+  "sourcePattern": "frames/ezgif-frame-{index}.png",
   "directory": "assets/rosu/hero-uad",
-  "poster": "ezgif-frame-001.webp",
-  "lastFrame": "ezgif-frame-238.webp"
+  "poster": "web/ezgif-frame-001.webp",
+  "lastFrame": "web/ezgif-frame-238.webp"
 }

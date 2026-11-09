@@ -124,11 +124,26 @@ export const regionalCentral = {
   cue: 'Continue through New York',
 } as const;
 
-export const regional = {
-  eyebrow: 'New York · Regional expertise',
-  title: 'One state. Distinct markets.',
-  body: 'From Central New York homes to the city’s high-rise core.',
-  cue: 'Scroll to move through New York',
+export const regionalExpertiseLabels = {
+  eyebrow: 'New York · Regional architecture expertise',
+  regions: [
+    {
+      region: 'Hudson Valley',
+      points: ['Historic estates', 'Stone foundations', 'Acreage'],
+    },
+    {
+      region: 'Central New York',
+      points: ['Resilient homes', 'Craftsman bungalows', 'Snow-bearing roofs'],
+    },
+    {
+      region: 'New York City and Downstate',
+      points: ['Brownstones', 'Pre-war masonry', 'Multifamily and high-rise buildings'],
+    },
+    {
+      region: 'Western New York',
+      points: ['Brick homes', 'Weather-resistant construction', 'Adaptive reuse'],
+    },
+  ] as const,
 } as const;
 
 export const propertyTypes = {

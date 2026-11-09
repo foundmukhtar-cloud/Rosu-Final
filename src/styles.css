@@ -480,6 +480,7 @@ button {
    ========================================================================== */
 .hero-layer {
   align-items: center;
+  justify-content: center;
   padding: calc(var(--header-h) + 40px) clamp(24px, 6vw, 92px) 12vh;
   transform: translate3d(0, calc(var(--p, 0) * -36px), 0);
   will-change: opacity, transform;
@@ -666,6 +667,38 @@ button {
   pointer-events: auto;
 }
 
+.uad-card--interactive {
+  cursor: default;
+  transition: transform 0.35s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.uad-card--interactive:hover,
+.uad-card--interactive:focus-visible,
+.uad-card--interactive[data-hovering='true'] {
+  transform: translateY(-6px) rotate(-1.2deg) scale(1.012);
+  border-color: var(--bronze-soft);
+  box-shadow: 0 48px 90px -48px rgba(13, 31, 51, 0.55);
+}
+
+.uad-card--interactive:focus-visible {
+  outline: none;
+  border-color: var(--bronze);
+}
+
+/* Prefer the still journey on small screens: keep the booklet readable as static HTML */
+@media (max-width: 767px) {
+  .uad-card--interactive {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .uad-card--interactive .uad-card__info-panel {
+    opacity: 1;
+    max-height: 420px;
+    margin-top: 22px;
+  }
+}
+
 .uad-card__title {
   margin: 16px 0 18px;
   font-family: var(--serif);
@@ -723,6 +756,60 @@ button {
   padding-top: 14px;
   border-top: 1px solid rgba(18, 42, 69, 0.1);
   display: inline-flex;
+}
+
+/* ---------- UAD 3.6 booklet info panel ---------- */
+.uad-card__info-panel {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(165, 133, 92, 0.3);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, max-height 0.35s ease, margin-top 0.35s ease;
+}
+
+.uad-card--interactive:hover .uad-card__info-panel,
+.uad-card--interactive:focus-visible .uad-card__info-panel,
+.uad-card--interactive[data-hovering='true'] .uad-card__info-panel {
+  opacity: 1;
+  max-height: 420px;
+  margin-top: 22px;
+}
+
+.uad-card__info-caption {
+  margin: 0 0 12px;
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+
+.uad-card__info-list {
+  list-style: none;
+  display: grid;
+  gap: 14px;
+}
+
+.uad-card__info-list li {
+  display: grid;
+  gap: 6px;
+}
+
+.uad-card__info-title {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+.uad-card__info-desc {
+  display: block;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--slate);
+  max-width: 42ch;
 }
 
 /* ==========================================================================
@@ -1165,6 +1252,59 @@ button {
   font-size: clamp(15px, 1.3vw, 19px);
   line-height: 1.7;
   color: var(--slate);
+}
+
+/* ---------- Regional expertise labels ---------- */
+.region-expertise-labels {
+  margin-top: clamp(22px, 3.4vh, 34px);
+  display: grid;
+  gap: clamp(14px, 1.6vh, 20px);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+
+.region-expertise-labels.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.region-expertise-label {
+  display: grid;
+  gap: 6px;
+  font-size: clamp(12.5px, 1.1vw, 15px);
+  line-height: 1.5;
+  color: var(--navy);
+  max-width: 52ch;
+}
+
+.region-expertise-label__region {
+  font-family: var(--serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  font-size: clamp(13.5px, 1.15vw, 16px);
+}
+
+.region-expertise-label__points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  padding-top: 3px;
+}
+
+.region-expertise-label__point {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.region-expertise-label__point::before {
+  content: '·';
+  margin-right: 8px;
+  color: var(--bronze);
 }
 
 /* Scene Cues Matching Reference Images */

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   audience,
   chapters,
@@ -7,6 +7,7 @@ import {
   hero,
   propertyTypes,
   regionalCentral,
+  regionalExpertiseLabels,
   regionalUpstate,
   uad,
   valuationMethod,
@@ -172,9 +173,6 @@ function ProcessIcon({ className }: { className?: string }) {
 export function HeroOverlay({ onExplore }: { onExplore: () => void }) {
   return (
     <div className="layer hero-layer">
-      <div className="hero-wordmark" aria-hidden="true">
-        <span>ROSU</span>
-      </div>
       <div className="hero">
         <p className="eyebrow hero__eyebrow">{hero.eyebrow}</p>
         <h1 className="hero__title">{hero.title}</h1>
@@ -205,7 +203,11 @@ export function UadOverlay({ onRequest }: { onRequest?: () => void }) {
   return (
     <div className="layer uad-layer">
       <div className="uad-layer__inner">
-        <div className="uad-card">
+        <div
+          className="uad-card uad-card--interactive"
+          role="article"
+          aria-label="UAD 3.6 booklet, hover or focus for details"
+        >
           <div className="uad-card__badge-row">
             <span className="badge">GSE & Non-QM Ready</span>
             <span className="benefit">UAD 3.6 Native Schema</span>
@@ -217,6 +219,29 @@ export function UadOverlay({ onRequest }: { onRequest?: () => void }) {
               <li key={point}>{point}</li>
             ))}
           </ul>
+          <div className="uad-card__info-panel" aria-hidden={false}>
+            <div className="uad-card__info-caption">What this booklet covers</div>
+            <ul className="uad-card__info-list">
+              <li>
+                <span className="uad-card__info-title">Native structured property data</span>
+                <span className="uad-card__info-desc">
+                  Property facts, condition and quality ratings, and comp evidence are captured in a single UAD 3.6 record instead of free text attached later.
+                </span>
+              </li>
+              <li>
+                <span className="uad-card__info-title">Consistent condition and quality ratings</span>
+                <span className="uad-card__info-desc">
+                  Every assignment uses the same UAD 3.6 condition and quality field definitions, so one report reads like the next.
+                </span>
+              </li>
+              <li>
+                <span className="uad-card__info-title">Lender-ready delivery</span>
+                <span className="uad-card__info-desc">
+                  The completed dataset is delivered in the form underwriters already review, with reviewable structured fields rather than a scanned narrative alone.
+                </span>
+              </li>
+            </ul>
+          </div>
           {onRequest ? (
             <button
               type="button"
@@ -509,6 +534,25 @@ export function FoundationOverlay({ onLearnMore }: { onLearnMore: () => void }) 
 
 /* ---------- 5. Regional Upstate (Hudson Valley - Image 5 from first set) ---------- */
 export function RegionalUpstateOverlay() {
+  const labelsRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const labels = labelsRef.current;
+    if (!labels) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.length) return;
+        const entry = entries[0];
+        labels.classList.toggle('is-visible', entry.isIntersecting);
+      },
+      { threshold: 0.25 },
+    );
+
+    observer.observe(labels);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="layer regional-upstate-layer">
       <div className="region-editorial">
@@ -524,6 +568,18 @@ export function RegionalUpstateOverlay() {
           <span className="scene-cue__dot" />
           <span className="scene-cue__dot" />
         </div>
+      </div>
+      <div ref={labelsRef} className="region-expertise-labels" aria-label="Regional architecture expertise">
+        {regionalExpertiseLabels.regions.map((region) => (
+          <div key={region.region} className="region-expertise-label">
+            <span className="region-expertise-label__region">{region.region}</span>
+            <div className="region-expertise-label__points" aria-label={`${region.region} specialties`}>
+              {region.points.map((point) => (
+                <span key={point} className="region-expertise-label__point">{point}</span>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -17,6 +17,9 @@ type ScrollSequenceProps = {
 };
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+
+const COVER_ANIMATION_START = 0.645;
+const COVER_ANIMATION_END = 1;
 // The tail of each shot dissolves into the opening frame of the next supplied
 // shot, so the scenes join without a cut, blank frame or paused frame.
 const CROSSFADE_START = 0.94;
@@ -81,15 +84,17 @@ export function ScrollSequence({
 
     function applyCover(progress: number) {
       if (!coverTrack || coverTrack.length === 0 || geometry.dw === 0) return;
+      const clamped = clamp01((progress - COVER_ANIMATION_START) / (COVER_ANIMATION_END - COVER_ANIMATION_START));
+      const effectiveProgress = COVER_ANIMATION_START + clamped * (COVER_ANIMATION_END - COVER_ANIMATION_START);
       let a = coverTrack[0];
       let b = coverTrack[coverTrack.length - 1];
-      if (progress <= a.p) {
+      if (effectiveProgress <= a.p) {
         b = a;
-      } else if (progress >= b.p) {
+      } else if (effectiveProgress >= b.p) {
         a = b;
       } else {
         for (let i = 0; i < coverTrack.length - 1; i += 1) {
-          if (progress >= coverTrack[i].p && progress <= coverTrack[i + 1].p) {
+          if (effectiveProgress >= coverTrack[i].p && effectiveProgress <= coverTrack[i + 1].p) {
             a = coverTrack[i];
             b = coverTrack[i + 1];
             break;
@@ -97,7 +102,7 @@ export function ScrollSequence({
         }
       }
       const span = b.p - a.p;
-      const t = span > 0 ? clamp01((progress - a.p) / span) : 0;
+      const t = span > 0 ? clamp01((effectiveProgress - a.p) / span) : 0;
       const x = a.x + (b.x - a.x) * t;
       const y = a.y + (b.y - a.y) * t;
       const w = a.w + (b.w - a.w) * t;

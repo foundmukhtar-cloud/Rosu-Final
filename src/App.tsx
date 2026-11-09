@@ -39,6 +39,10 @@ import {
   penthouseLounge,
   regionalExpertise,
 } from './lib/sequences';
+import { heroUadCover } from './lib/booklet';
+
+// Kept for future cover synchronization; not read locally yet.
+void(heroUadCover);
 
 type Mode = 'motion' | 'still';
 
@@ -129,6 +133,7 @@ function MotionJourney({
 
       <div className="booklet-layer">
         <BookletCover />
+        <style>{`.booklet-cover .cover-line{animation:coverIn 0.9s cubic-bezier(.2,.7,.2,1) both} @keyframes coverIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}`}</style>
       </div>
       <UadOverlay onRequest={onRequest} />
 

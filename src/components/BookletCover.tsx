@@ -30,29 +30,29 @@ export function BookletCover({ rect, still = false }: BookletCoverProps) {
       aria-label="Uniform Appraisal Dataset 3.6 Booklet Cover"
     >
       <div className="booklet-cover__top">
-        <p className="cover-line cover-line--mark" style={lineStyle(0.68)}>
+        <p className="cover-line cover-line--mark" style={lineStyle(0.60)}>
           ROSU
         </p>
-        <p className="cover-line cover-line--eyebrow" style={lineStyle(0.70)}>
+        <p className="cover-line cover-line--eyebrow" style={lineStyle(0.62)}>
           Uniform Appraisal Dataset
         </p>
       </div>
 
       <div className="booklet-cover__main">
-        <h2 className="cover-line cover-line--title" style={lineStyle(0.72)}>
+        <h2 className="cover-line cover-line--title" style={lineStyle(0.64)}>
           UAD 3.6
         </h2>
-        <span className="cover-line cover-rule" style={lineStyle(0.74)} />
-        <p className="cover-line cover-line--sub" style={lineStyle(0.75)}>
+        <span className="cover-line cover-rule" style={lineStyle(0.65)} />
+        <p className="cover-line cover-line--sub" style={lineStyle(0.66)}>
           Standardized Valuation Report
         </p>
       </div>
 
       <div className="booklet-cover__bottom">
-        <p className="cover-line cover-line--foot" style={lineStyle(0.76)}>
+        <p className="cover-line cover-line--foot" style={lineStyle(0.67)}>
           Appraisal Report · New York
         </p>
-        <p className="cover-line cover-line--meta" style={lineStyle(0.78)}>
+        <p className="cover-line cover-line--meta" style={lineStyle(0.68)}>
           GSE &amp; Non-QM Native Schema
         </p>
       </div>

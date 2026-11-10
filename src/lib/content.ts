@@ -112,15 +112,15 @@ export const foundation = {
 
 export const regionalUpstate = {
   eyebrow: 'Upstate & Hudson Valley',
-  title: 'Rooted in place.',
-  body: 'Historic estates. Deep foundations. Local perspective.',
+  title: 'Certified Valuations for Historic Estates & Acreage',
+  body: 'Comprehensive appraisal for historic residences, waterfront parcels, and conservation acreage across the Hudson Valley—delivered to rigorous GSE and private client standards.',
   cue: 'Continue through New York',
 } as const;
 
 export const regionalCentral = {
-  eyebrow: 'Regional Expertise · Central New York',
-  title: 'Built for every season.',
-  body: 'Resilient homes. Local knowledge. Clear valuation.',
+  eyebrow: 'Central New York',
+  title: 'Defensible Appraisals Across Central New York',
+  body: 'Independent property valuations for single-family residences, craftsman architecture, and rural acreage with deep local market analysis.',
   cue: 'Continue through New York',
 } as const;
 

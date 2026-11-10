@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   audience,
   chapters,
@@ -7,7 +7,6 @@ import {
   hero,
   propertyTypes,
   regionalCentral,
-  regionalExpertiseLabels,
   regionalUpstate,
   uad,
   valuationMethod,
@@ -532,27 +531,8 @@ export function FoundationOverlay({ onLearnMore }: { onLearnMore: () => void }) 
   );
 }
 
-/* ---------- 5. Regional Upstate (Hudson Valley - Image 5 from first set) ---------- */
+/* ---------- 5. Regional Upstate (Hudson Valley) ---------- */
 export function RegionalUpstateOverlay() {
-  const labelsRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const labels = labelsRef.current;
-    if (!labels) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries.length) return;
-        const entry = entries[0];
-        labels.classList.toggle('is-visible', entry.isIntersecting);
-      },
-      { threshold: 0.25 },
-    );
-
-    observer.observe(labels);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <div className="layer regional-upstate-layer">
       <div className="region-editorial">
@@ -568,18 +548,6 @@ export function RegionalUpstateOverlay() {
           <span className="scene-cue__dot" />
           <span className="scene-cue__dot" />
         </div>
-      </div>
-      <div ref={labelsRef} className="region-expertise-labels" aria-label="Regional architecture expertise">
-        {regionalExpertiseLabels.regions.map((region) => (
-          <div key={region.region} className="region-expertise-label">
-            <span className="region-expertise-label__region">{region.region}</span>
-            <div className="region-expertise-label__points" aria-label={`${region.region} specialties`}>
-              {region.points.map((point) => (
-                <span key={point} className="region-expertise-label__point">{point}</span>
-              ))}
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );

@@ -7,7 +7,6 @@ export type LoadingScreenProps = {
   containerRef?: React.RefObject<HTMLDivElement | null>;
   style?: CSSProperties;
   className?: string;
-  leaving?: boolean;
 };
 
 export function LoadingScreen({
@@ -17,7 +16,6 @@ export function LoadingScreen({
   containerRef,
   style,
   className,
-  leaving = false,
 }: LoadingScreenProps) {
   const outerStyle: CSSProperties = {
     ...style,
@@ -30,12 +28,9 @@ export function LoadingScreen({
     justifyContent: 'center',
     gap: 18,
     padding: 24,
-    backgroundColor: '#08111d',
-    color: '#ffffff',
+    backgroundColor: 'var(--ivory)',
+    color: 'var(--navy)',
     textAlign: 'center',
-    opacity: leaving ? 0 : 1,
-    pointerEvents: leaving ? 'none' : 'auto',
-    transition: 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
   };
 
   const trackStyle: CSSProperties = {
@@ -49,7 +44,7 @@ export function LoadingScreen({
     position: 'absolute',
     inset: 0,
     borderRadius: '50%',
-    border: '2px solid rgba(255, 255, 255, 0.15)',
+    border: '2px solid var(--ivory-muted)',
     boxSizing: 'border-box',
   };
 
@@ -58,8 +53,8 @@ export function LoadingScreen({
     inset: 0,
     borderRadius: '50%',
     border: '2px solid transparent',
-    borderTopColor: '#ffffff',
-    borderRightColor: '#d4bd8d',
+    borderTopColor: 'var(--navy)',
+    borderRightColor: 'var(--bronze)',
     boxSizing: 'border-box',
     animation: 'spin 1.1s linear infinite',
   };
@@ -73,7 +68,7 @@ export function LoadingScreen({
     marginLeft: -2,
     marginTop: -2,
     borderRadius: '50%',
-    backgroundColor: '#d4bd8d',
+    backgroundColor: 'var(--navy)',
   };
 
   return (
@@ -100,12 +95,12 @@ export function LoadingScreen({
       </div>
 
       <div style={{ maxWidth: 280, lineHeight: 1.5, letterSpacing: '0.01em' }}>
-        <p style={{ margin: 0, fontSize: 12, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#ffffff', fontWeight: 600 }}>
+        <p style={{ margin: 0, fontSize: 13, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--navy)' }}>
           {status}
         </p>
         {announce != null && (
           <p
-            style={{ margin: '8px 0 0', fontSize: 11, color: '#e6dab8', letterSpacing: '0.06em' }}
+            style={{ margin: '8px 0 0', fontSize: 12, color: 'var(--slate)' }}
             aria-live="polite"
             aria-atomic="true"
           >
@@ -130,21 +125,17 @@ export function LoadingScreenSkip({
       onClick={onSkip}
       style={{
         position: 'absolute',
-        bottom: 28,
+        bottom: 24,
         left: '50%',
         transform: 'translateX(-50%)',
-        padding: '8px 18px',
-        border: '1px solid rgba(255, 255, 255, 0.4)',
-        borderRadius: 20,
-        background: 'rgba(255, 255, 255, 0.08)',
-        color: '#ffffff',
-        fontSize: 10,
-        fontWeight: 600,
-        letterSpacing: '0.2em',
+        padding: '10px 16px',
+        border: '1px solid var(--navy)',
+        background: 'transparent',
+        color: 'var(--navy)',
+        fontSize: 11,
+        letterSpacing: '0.16em',
         textTransform: 'uppercase',
         cursor: 'pointer',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
       }}
     >
       Skip loading

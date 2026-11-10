@@ -14,7 +14,6 @@ type ScrollSequenceProps = {
   anchorAt?: number;
   coverTrack?: CoverKeyframe[];
   children: ReactNode;
-  onReady?: () => void;
 };
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
@@ -40,7 +39,6 @@ export function ScrollSequence({
   anchorAt = 0.68,
   coverTrack,
   children,
-  onReady,
 }: ScrollSequenceProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
@@ -257,14 +255,6 @@ export function ScrollSequence({
     const redraw = () => render(Number(stage.dataset.segmentIndex ?? 0), progressBRef.current, true);
     const unsubscribes = loaders.map((loader) => loader.onLoad(redraw));
 
-    const checkReady = () => {
-      if (loaders[0]?.get(0)) {
-        onReady?.();
-      }
-    };
-    const unsubFirst = loaders[0].onLoad(checkReady);
-    checkReady();
-
     loaders[0].preloadCritical();
     loaders[0].requestFocus(0);
     measure();
@@ -282,7 +272,6 @@ export function ScrollSequence({
     window.addEventListener('orientationchange', kick);
 
     return () => {
-      unsubFirst();
       for (const unsubscribe of unsubscribes) unsubscribe();
       for (const loader of loaders) loader.dispose();
       resizeObserver.disconnect();

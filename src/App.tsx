@@ -21,6 +21,7 @@ import {
   audience,
   closing,
   foundation,
+  hero,
   propertyTypes,
   regionalCentral,
   regionalUpstate,
@@ -184,18 +185,15 @@ function StillJourney({
           src={assetUrl(sequence.poster)}
           alt="Lower Manhattan skyline in morning light, seen across a limestone architectural model."
         />
-        <div className="foundation-left-editorial still-hero__copy">
-          <p className="eyebrow foundation__eyebrow">{foundation.eyebrow}</p>
-          <h1 className="foundation__title" id="still-hero-title">
-            People.
-            <br />
-            Technology.
-            <br />
-            Process.
+        <div className="still-hero__copy">
+          <p className="eyebrow hero__eyebrow">{hero.eyebrow}</p>
+          <h1 className="hero__title" id="still-hero-title">
+            {hero.title}
           </h1>
-          <p className="foundation__subtitle">{foundation.subtitle}</p>
-          <a className="hero__link foundation__link" href="#approach">
-            {foundation.cta} <span aria-hidden="true">→</span>
+          <p className="hero__body">{hero.body}</p>
+          <a className="hero__link" href="#approach">
+            {hero.cta}
+            <span aria-hidden="true">→</span>
           </a>
         </div>
       </section>

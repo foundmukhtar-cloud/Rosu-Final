@@ -97,7 +97,7 @@ function scrollToTarget(targetId: string) {
     return;
   }
   if (targetId === 'approach') {
-    scrollToVh(560);
+    scrollToVh(690);
     return;
   }
   const el = document.getElementById(targetId);
@@ -111,11 +111,13 @@ function MotionJourney({
   onRequestRole,
   onExplore,
   onJumpToVh,
+  onReady,
 }: {
   onRequest: () => void;
   onRequestRole: (role: string) => void;
   onExplore: () => void;
   onJumpToVh: (vh: number) => void;
+  onReady?: () => void;
 }) {
   return (
     <ScrollSequence
@@ -124,8 +126,9 @@ function MotionJourney({
       continuation={continuation}
       id="appraisal"
       anchorId="approach"
-      anchorAt={0.923}
+      anchorAt={2.46}
       coverTrack={heroUadCover}
+      onReady={onReady}
     >
       <HeroOverlay onExplore={onExplore} />
 
@@ -468,6 +471,7 @@ export default function App() {
   };
 
   const [loadingOpen, setLoadingOpen] = useState(true);
+  const [loadingLeaving, setLoadingLeaving] = useState(false);
   const loadingLiveRef = useRef<HTMLDivElement | null>(null);
 
   const announceLoading = (text: string) => {
@@ -476,9 +480,16 @@ export default function App() {
     }
   };
 
+  const handleReady = () => {
+    setLoadingLeaving(true);
+    setTimeout(() => {
+      setLoadingOpen(false);
+      announceLoading('Entering the site. Content continues to load in the background.');
+    }, 600);
+  };
+
   const skipLoading = () => {
-    setLoadingOpen(false);
-    announceLoading('Entering the site. Content continues to load in the background.');
+    handleReady();
   };
 
   useEffect(() => {
@@ -488,7 +499,12 @@ export default function App() {
       return;
     }
     announceLoading('Preparing your experience');
+    // Safety fallback so loading screen gracefully dissolves after at most 800ms
+    const timer = setTimeout(() => {
+      handleReady();
+    }, 800);
     return () => {
+      clearTimeout(timer);
       if (!loadingOpen) {
         announceLoading('');
       }
@@ -513,6 +529,7 @@ export default function App() {
             onRequestRole={(role) => handleOpenRequest(role)}
             onExplore={() => scrollToTarget('approach')}
             onJumpToVh={scrollToVh}
+            onReady={handleReady}
           />
         ) : (
           <StillJourney
@@ -544,6 +561,7 @@ export default function App() {
           status="Preparing your experience"
           announce="Preparing your experience"
           containerRef={loadingLiveRef}
+          leaving={loadingLeaving}
         >
           <LoadingScreenSkip onSkip={skipLoading} />
         </LoadingScreen>

@@ -4,7 +4,6 @@ import {
   chapters,
   cityHighrise,
   foundation,
-  hero,
   propertyTypes,
   regionalCentral,
   regionalUpstate,
@@ -170,29 +169,116 @@ function ProcessIcon({ className }: { className?: string }) {
 
 /* ---------- 1. Hero Overlay ---------- */
 export function HeroOverlay({ onExplore }: { onExplore: () => void }) {
+  const [activePillarId, setActivePillarId] = useState<string | null>(null);
+  const activePillar = foundation.pillars.find((p) => p.id === activePillarId);
+
   return (
     <div className="layer hero-layer">
-      <div className="hero">
-        <p className="eyebrow hero__eyebrow">{hero.eyebrow}</p>
-        <h1 className="hero__title">{hero.title}</h1>
-        <p className="hero__body">{hero.body}</p>
+      {/* Left Editorial Scrim Matching Reference Image */}
+      <div className="foundation-left-editorial hero-left-editorial">
+        <p className="eyebrow foundation__eyebrow">{foundation.eyebrow}</p>
+        <h1 className="foundation__title">
+          People.
+          <br />
+          Technology.
+          <br />
+          Process.
+        </h1>
+        <p className="foundation__subtitle">{foundation.subtitle}</p>
         <a
-          className="hero__link"
           href="#approach"
+          className="hero__link foundation__link"
           onClick={(e) => {
             e.preventDefault();
             onExplore();
           }}
         >
-          {hero.cta}
-          <span aria-hidden="true">→</span>
+          {foundation.cta} <span aria-hidden="true">→</span>
         </a>
       </div>
-      <div className="scroll-cue" aria-hidden="true">
-        <span>Scroll to explore</span>
-        <span className="scroll-cue__line" />
-        <span className="scroll-cue__arrow">↓</span>
+
+      {/* Pedestal Interactive Buttons Over the 3 Stone Blocks in the Footage */}
+      <div className="pedestal-stage">
+        {/* 1. PEOPLE */}
+        <button
+          type="button"
+          className="pedestal-btn pedestal-btn--people"
+          onClick={() => setActivePillarId('people')}
+          aria-label="Inspect People methodology: Experience, Judgment, Local Insight"
+        >
+          <PeopleIcon className="pedestal-btn__icon" />
+          <span className="pedestal-btn__title">PEOPLE</span>
+          <div className="pedestal-btn__lines">
+            <span>EXPERIENCE</span>
+            <span>JUDGMENT</span>
+            <span>LOCAL INSIGHT</span>
+          </div>
+        </button>
+
+        {/* 2. TECHNOLOGY */}
+        <button
+          type="button"
+          className="pedestal-btn pedestal-btn--tech"
+          onClick={() => setActivePillarId('technology')}
+          aria-label="Inspect Technology methodology: Precise Tools, Accurate Data, Greater Clarity"
+        >
+          <TechIcon className="pedestal-btn__icon" />
+          <span className="pedestal-btn__title">TECHNOLOGY</span>
+          <div className="pedestal-btn__lines">
+            <span>PRECISE TOOLS</span>
+            <span>ACCURATE DATA</span>
+            <span>GREATER CLARITY</span>
+          </div>
+        </button>
+
+        {/* 3. PROCESS */}
+        <button
+          type="button"
+          className="pedestal-btn pedestal-btn--process"
+          onClick={() => setActivePillarId('process')}
+          aria-label="Inspect Process methodology: Order, Review, Delivery"
+        >
+          <span className="pedestal-btn__steps">01 — 02 — 03</span>
+          <ProcessIcon className="pedestal-btn__icon" />
+          <span className="pedestal-btn__title">PROCESS</span>
+          <div className="pedestal-btn__lines">
+            <span>ORDER</span>
+            <span>REVIEW</span>
+            <span>DELIVERY</span>
+          </div>
+        </button>
       </div>
+
+      {/* Floating Pillar Details Modal on Click */}
+      {activePillar ? (
+        <div
+          className="plinth-modal-backdrop"
+          onClick={() => setActivePillarId(null)}
+          role="presentation"
+        >
+          <div
+            className="plinth-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="hero-pillar-modal-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="plinth-modal__close"
+              onClick={() => setActivePillarId(null)}
+              aria-label="Close details"
+            >
+              ×
+            </button>
+            <span className="badge">{activePillar.number} PILLAR</span>
+            <h3 id="hero-pillar-modal-title" className="plinth-modal__title">
+              {activePillar.headline}
+            </h3>
+            <p className="plinth-modal__desc">{activePillar.description}</p>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

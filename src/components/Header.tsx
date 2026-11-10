@@ -8,13 +8,8 @@ type HeaderProps = {
 export function Header({ onRequest, onNavigate }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeNav, setActiveNav] = useState<'appraisal' | 'approach' | 'contact'>('appraisal');
-  const [overHero, setOverHero] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return (
-      !window.matchMedia('(max-width: 767px)').matches &&
-      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    );
-  });
+  const [scrolled, setScrolled] = useState(false);
+  const [overHero, setOverHero] = useState(false);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -27,6 +22,8 @@ export function Header({ onRequest, onNavigate }: HeaderProps) {
 
   useEffect(() => {
     const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+
       const contactEl = document.getElementById('contact');
       if (contactEl) {
         const contactRect = contactEl.getBoundingClientRect();
@@ -44,7 +41,7 @@ export function Header({ onRequest, onNavigate }: HeaderProps) {
         const journeyRect = journeyEl.getBoundingClientRect();
         const stickyHeight = window.innerHeight;
         const scrolledVh = (-journeyRect.top / stickyHeight) * 100;
-        setOverHero(scrolledVh < 560);
+        setOverHero(scrolledVh < 40);
         setActiveNav(scrolledVh >= 560 ? 'approach' : 'appraisal');
         return;
       }
@@ -74,7 +71,7 @@ export function Header({ onRequest, onNavigate }: HeaderProps) {
 
   return (
     <header
-      className={`site-header${overHero ? ' site-header--over-hero' : ''}`}
+      className={`site-header${overHero ? ' site-header--over-hero' : ''}${scrolled ? ' site-header--scrolled' : ''}`}
       role="banner"
     >
       <div className="site-header__inner">

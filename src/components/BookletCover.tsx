@@ -27,21 +27,36 @@ export function BookletCover({ rect, still = false }: BookletCoverProps) {
     <div
       className={`booklet-cover${still ? ' booklet-cover--still' : ''}`}
       style={rectStyle}
-      aria-hidden="true"
+      aria-label="Uniform Appraisal Dataset 3.6 Booklet Cover"
     >
-      <p className="cover-line cover-line--mark" style={lineStyle(0.72)}>
-        ROSU
-      </p>
-      <p className="cover-line cover-line--eyebrow" style={lineStyle(0.745)}>
-        Uniform Appraisal Dataset
-      </p>
-      <p className="cover-line cover-line--title" style={lineStyle(0.765)}>
-        UAD 3.6
-      </p>
-      <span className="cover-line cover-rule" style={lineStyle(0.785)} />
-      <p className="cover-line cover-line--foot" style={lineStyle(0.8)}>
-        Appraisal report
-      </p>
+      <div className="booklet-cover__top">
+        <p className="cover-line cover-line--mark" style={lineStyle(0.68)}>
+          ROSU
+        </p>
+        <p className="cover-line cover-line--eyebrow" style={lineStyle(0.70)}>
+          Uniform Appraisal Dataset
+        </p>
+      </div>
+
+      <div className="booklet-cover__main">
+        <h2 className="cover-line cover-line--title" style={lineStyle(0.72)}>
+          UAD 3.6
+        </h2>
+        <span className="cover-line cover-rule" style={lineStyle(0.74)} />
+        <p className="cover-line cover-line--sub" style={lineStyle(0.75)}>
+          Standardized Valuation Report
+        </p>
+      </div>
+
+      <div className="booklet-cover__bottom">
+        <p className="cover-line cover-line--foot" style={lineStyle(0.76)}>
+          Appraisal Report · New York
+        </p>
+        <p className="cover-line cover-line--meta" style={lineStyle(0.78)}>
+          GSE &amp; Non-QM Native Schema
+        </p>
+      </div>
     </div>
   );
 }
+

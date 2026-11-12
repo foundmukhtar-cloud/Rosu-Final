@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from 'react';
 
 export type LoadingScreenProps = {
   status?: string;
+  progress?: number;
   announce?: string;
   children?: ReactNode;
   containerRef?: React.RefObject<HTMLDivElement | null>;
@@ -11,6 +12,7 @@ export type LoadingScreenProps = {
 
 export function LoadingScreen({
   status = 'Preparing your experience',
+  progress,
   announce,
   children,
   containerRef,
@@ -31,6 +33,7 @@ export function LoadingScreen({
     backgroundColor: 'var(--ivory)',
     color: 'var(--navy)',
     textAlign: 'center',
+    transition: 'opacity 0.5s ease',
   };
 
   const trackStyle: CSSProperties = {
@@ -85,7 +88,7 @@ export function LoadingScreen({
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={100}
-        aria-valuenow={0}
+        aria-valuenow={progress != null ? Math.round(progress) : 0}
         aria-label="Preparing your experience"
         style={trackStyle}
       >
@@ -94,10 +97,31 @@ export function LoadingScreen({
         <div style={accentDotStyle} />
       </div>
 
-      <div style={{ maxWidth: 280, lineHeight: 1.5, letterSpacing: '0.01em' }}>
-        <p style={{ margin: 0, fontSize: 13, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--navy)' }}>
+      <div style={{ maxWidth: 320, lineHeight: 1.5, letterSpacing: '0.01em', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <p style={{ margin: 0, fontSize: 13, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--navy)', fontWeight: 500 }}>
           {status}
         </p>
+        {progress != null && (
+          <div
+            style={{
+              marginTop: 14,
+              width: 200,
+              height: 3,
+              backgroundColor: 'rgba(16, 35, 59, 0.12)',
+              borderRadius: 2,
+              overflow: 'hidden',
+            }}
+          >
+            <div
+              style={{
+                width: `${Math.min(100, Math.max(0, progress))}%`,
+                height: '100%',
+                backgroundColor: 'var(--bronze)',
+                transition: 'width 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            />
+          </div>
+        )}
         {announce != null && (
           <p
             style={{ margin: '8px 0 0', fontSize: 12, color: 'var(--slate)' }}

@@ -452,10 +452,10 @@ button {
 }
 
 /* Segment C: People / Technology / Process (Gallery with 3 Pedestals) */
-/* Appears when camera glides into the gallery in front of the 3 pedestals */
+/* Only appears when the camera actually glides into the gallery corridor and locks on the 3 pedestals frame (holdStart: 0.52) */
 .journey__sticky[data-segment='c'] .foundation-layer {
   opacity: calc(
-    clamp(0, calc((var(--pn, 0) - 0.05) * 6), 1) *
+    clamp(0, calc((var(--pn, 0) - 0.49) * 8), 1) *
     clamp(0, calc((0.98 - var(--pn, 0)) * 14), 1)
   );
   visibility: visible;
@@ -1046,7 +1046,7 @@ button {
   pointer-events: none;
 }
 
-/* 5 Real HTML Buttons Positioned Directly Over the 5 Plinth Faces */
+/* 5 Engraved Stone Plinth Inscriptions (Natural travertine carving) */
 .plinth-btn {
   position: absolute;
   display: flex;
@@ -1054,31 +1054,33 @@ button {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 4px;
+  background: transparent;
+  color: #2e2417;
+  border: none;
+  border-radius: 2px;
   cursor: pointer;
   pointer-events: auto;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 6px 8px;
   text-align: center;
-  box-shadow: 0 10px 32px -4px rgba(0, 0, 0, 0.45), inset 0 0 14px rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .plinth-btn:hover {
-  background: rgba(255, 255, 255, 0.24);
-  border-color: rgba(255, 255, 255, 0.75);
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.65), inset 0 0 18px rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.22) 0%,
+    transparent 72%
+  );
 }
 
 .plinth-btn:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-  background: rgba(255, 255, 255, 0.32);
+  outline: 2px solid var(--bronze);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 /* Plinth Coordinates (16:9 Percentages) */
@@ -1120,24 +1122,35 @@ button {
 .plinth-btn__icon {
   width: clamp(20px, 1.8vw, 26px);
   height: clamp(20px, 1.8vw, 26px);
-  stroke: #ffffff;
-  opacity: 1;
-  transition: transform 0.2s ease;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.65));
+  stroke: #2e2417;
+  stroke-width: 1.6;
+  opacity: 0.95;
+  transition: transform 0.25s ease, stroke 0.25s ease;
+  filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.9))
+    drop-shadow(0 -1px 0.5px rgba(24, 18, 12, 0.45));
 }
 
 .plinth-btn:hover .plinth-btn__icon {
-  transform: scale(1.08);
+  transform: scale(1.06);
+  stroke: #0b1420;
+  filter: drop-shadow(0 0 8px rgba(185, 151, 102, 0.6))
+    drop-shadow(0 1px 1px rgba(255, 255, 255, 0.95));
 }
 
 .plinth-btn__label {
-  font-family: var(--sans);
-  font-size: clamp(9.5px, 0.8vw, 11.5px);
+  font-family: var(--serif);
+  font-size: clamp(11.5px, 0.95vw, 13.5px);
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #ffffff;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
+  color: #2e2417;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9), 0 -1px 0.5px rgba(24, 18, 12, 0.5);
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+.plinth-btn:hover .plinth-btn__label {
+  color: #0b1420;
+  text-shadow: 0 0 10px rgba(185, 151, 102, 0.5), 0 1px 1px rgba(255, 255, 255, 0.95);
 }
 
 /* Bottom Center Cue Matching Reference Image 5 */
@@ -1365,6 +1378,12 @@ button {
   top: 45.9%;
   width: 18.0%;
   height: 21.9%;
+  opacity: clamp(0, calc((var(--pn, 0) - 0.49) * 6), 1);
+  transform: translate3d(
+    0,
+    calc((1 - clamp(0, calc((var(--pn, 0) - 0.49) * 6), 1)) * 14px),
+    0
+  );
 }
 
 .pedestal-btn--tech {
@@ -1372,6 +1391,12 @@ button {
   top: 45.9%;
   width: 16.2%;
   height: 21.9%;
+  opacity: clamp(0, calc((var(--pn, 0) - 0.51) * 6), 1);
+  transform: translate3d(
+    0,
+    calc((1 - clamp(0, calc((var(--pn, 0) - 0.51) * 6), 1)) * 14px),
+    0
+  );
 }
 
 .pedestal-btn--process {
@@ -1379,6 +1404,24 @@ button {
   top: 45.9%;
   width: 17.4%;
   height: 21.9%;
+  opacity: clamp(0, calc((var(--pn, 0) - 0.53) * 6), 1);
+  transform: translate3d(
+    0,
+    calc((1 - clamp(0, calc((var(--pn, 0) - 0.53) * 6), 1)) * 14px),
+    0
+  );
+}
+
+.pedestal-btn--people:hover,
+.pedestal-btn--tech:hover,
+.pedestal-btn--process:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+}
+
+.loading-screen--fading {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-out;
 }
 
 .pedestal-btn__steps {

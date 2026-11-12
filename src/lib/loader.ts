@@ -12,8 +12,8 @@ export class FrameLoader {
   private focus = 0;
   private disposed = false;
   private listeners = new Set<Listener>();
-  private readonly concurrency = 5;
-  private readonly ahead = 36;
+  private readonly concurrency = 8;
+  private readonly ahead = 48;
 
   constructor(private readonly urls: string[]) {
     this.images = new Array(urls.length).fill(null);

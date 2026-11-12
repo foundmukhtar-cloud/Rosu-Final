@@ -54,7 +54,12 @@ const continuation: { sequence: Sequence; travelVh: number; holdStart?: number }
 ];
 
 function useExperienceMode(): Mode {
-  const [mode, setMode] = useState<Mode>('still');
+  const [mode, setMode] = useState<Mode>(() => {
+    if (typeof window === 'undefined') return 'motion';
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const small = window.matchMedia('(max-width: 767px)').matches;
+    return reduced || small ? 'still' : 'motion';
+  });
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -62,7 +67,6 @@ function useExperienceMode(): Mode {
     const small = window.matchMedia('(max-width: 767px)');
     const update = () =>
       setMode(reduced.matches || small.matches ? 'still' : 'motion');
-    update();
     reduced.addEventListener('change', update);
     small.addEventListener('change', update);
     return () => {
@@ -448,6 +452,19 @@ function Closing({ onRequest }: { onRequest: () => void }) {
   );
 }
 
+function preloadAsset(url: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = url;
+    if (img.complete && img.naturalWidth > 0) {
+      resolve(true);
+      return;
+    }
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+  });
+}
+
 export default function App() {
   const mode = useExperienceMode();
   const [requestOpen, setRequestOpen] = useState(false);
@@ -468,6 +485,8 @@ export default function App() {
   };
 
   const [loadingOpen, setLoadingOpen] = useState(true);
+  const [loadingFade, setLoadingFade] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
   const loadingLiveRef = useRef<HTMLDivElement | null>(null);
 
   const announceLoading = (text: string) => {
@@ -477,23 +496,91 @@ export default function App() {
   };
 
   const skipLoading = () => {
-    setLoadingOpen(false);
+    setLoadingFade(true);
+    setTimeout(() => {
+      setLoadingOpen(false);
+      document.body.style.overflow = '';
+    }, 300);
     announceLoading('Entering the site. Content continues to load in the background.');
   };
 
   useEffect(() => {
     if (!loadingOpen) return;
-    if (mode !== 'motion') {
-      setLoadingOpen(false);
-      return;
+
+    // Lock scrolling while assets load so first scroll is smooth
+    document.body.style.overflow = 'hidden';
+
+    // Collect initial critical frames: opening 36 frames of heroUad + sequence posters
+    const criticalUrls: string[] = [];
+    const preloadCount = Math.min(36, heroUad.frameCount);
+    for (let i = 0; i < preloadCount; i += 1) {
+      criticalUrls.push(frameUrl(heroUad, i));
     }
-    announceLoading('Preparing your experience');
-    return () => {
-      if (!loadingOpen) {
-        announceLoading('');
+    const allSequences = [
+      heroUad,
+      penthouseLounge,
+      gallery,
+      regionalExpertise,
+      newYorkContinuation,
+      newYorkContinuation2,
+      newYorkContinuation3,
+      newYorkContinuation4,
+    ];
+    for (const seq of allSequences) {
+      criticalUrls.push(assetUrl(seq.poster));
+    }
+
+    const total = criticalUrls.length;
+    let loaded = 0;
+    let cancelled = false;
+
+    // Safety timeout: never hang more than 4.5s
+    const timer = setTimeout(() => {
+      if (cancelled) return;
+      setLoadProgress(100);
+      setLoadingFade(true);
+      setTimeout(() => {
+        setLoadingOpen(false);
+        document.body.style.overflow = '';
+      }, 400);
+    }, 4500);
+
+    let index = 0;
+    const concurrency = 6;
+    const loadNext = async () => {
+      while (index < total && !cancelled) {
+        const currentIndex = index++;
+        await preloadAsset(criticalUrls[currentIndex]);
+        if (cancelled) return;
+        loaded += 1;
+        const pct = Math.min(100, Math.round((loaded / total) * 100));
+        setLoadProgress(pct);
+        if (loaded >= total) {
+          clearTimeout(timer);
+          setTimeout(() => {
+            if (cancelled) return;
+            setLoadingFade(true);
+            setTimeout(() => {
+              if (cancelled) return;
+              setLoadingOpen(false);
+              document.body.style.overflow = '';
+            }, 400);
+          }, 200);
+          return;
+        }
       }
     };
-  }, [loadingOpen, mode]);
+
+    for (let c = 0; c < concurrency; c += 1) {
+      loadNext();
+    }
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   return (
     <div id="top">
@@ -539,11 +626,13 @@ export default function App() {
         </div>
       </footer>
 
-      {loadingOpen && mode === 'motion' && (
+      {loadingOpen && (
         <LoadingScreen
-          status="Preparing your experience"
-          announce="Preparing your experience"
+          status={`Preparing your experience · ${loadProgress}%`}
+          progress={loadProgress}
+          announce={`Loading experience assets: ${loadProgress}% complete`}
           containerRef={loadingLiveRef}
+          className={loadingFade ? 'loading-screen--fading' : ''}
         >
           <LoadingScreenSkip onSkip={skipLoading} />
         </LoadingScreen>

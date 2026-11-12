@@ -1,6 +1,12 @@
 type Listener = () => void;
 
 /**
+ * Global shared in-memory image cache so preloaded frames from the loading
+ * screen are immediately available to FrameLoader with 0ms latency.
+ */
+export const globalImageCache = new Map<string, HTMLImageElement>();
+
+/**
  * Loads frame images progressively, nearest-to-focus first, with a small
  * concurrency window so scrolling never queues hundreds of requests at once.
  */
@@ -18,6 +24,14 @@ export class FrameLoader {
   constructor(private readonly urls: string[]) {
     this.images = new Array(urls.length).fill(null);
     this.failed = new Array(urls.length).fill(false);
+
+    // Immediately hydrate any frames that were already preloaded into shared cache
+    for (let i = 0; i < urls.length; i += 1) {
+      const cached = globalImageCache.get(urls[i]);
+      if (cached && cached.complete && cached.naturalWidth > 0) {
+        this.images[i] = cached;
+      }
+    }
   }
 
   get length(): number {
@@ -98,12 +112,22 @@ export class FrameLoader {
   }
 
   private start(index: number): void {
+    const url = this.urls[index];
+    const cached = globalImageCache.get(url);
+    if (cached && cached.complete && cached.naturalWidth > 0) {
+      this.images[index] = cached;
+      for (const listener of this.listeners) listener();
+      this.pump();
+      return;
+    }
+
     this.active += 1;
     const image = new Image();
     image.decoding = 'async';
     image.onload = () => {
       this.active -= 1;
       this.images[index] = image;
+      globalImageCache.set(url, image);
       for (const listener of this.listeners) listener();
       this.pump();
     };
@@ -112,6 +136,6 @@ export class FrameLoader {
       this.failed[index] = true;
       this.pump();
     };
-    image.src = this.urls[index];
+    image.src = url;
   }
 }

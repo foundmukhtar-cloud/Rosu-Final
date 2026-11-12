@@ -79,6 +79,7 @@ export function ScrollSequence({
     let lastKey = '';
     let raf = 0;
     let idleFrames = 0;
+    let currentTravelled = -1;
     // Where the frame is actually painted after cover-fitting.
     const geometry = { dx: 0, dy: 0, dw: 0, dh: 0 };
 
@@ -116,10 +117,6 @@ export function ScrollSequence({
     function paint(image: HTMLImageElement, alpha: number, clear: boolean) {
       if (cssWidth === 0 || cssHeight === 0) return;
       ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-      if (clear) {
-        ctx.globalAlpha = 1;
-        ctx.clearRect(0, 0, cssWidth, cssHeight);
-      }
       const scale = Math.max(cssWidth / image.naturalWidth, cssHeight / image.naturalHeight);
       const width = image.naturalWidth * scale;
       const height = image.naturalHeight * scale;
@@ -200,7 +197,19 @@ export function ScrollSequence({
       const travelFirst = Math.max(1, ((heightVh - 100) / 100) * stickyHeight);
       const travels = chain.map((entry) => Math.max(1, (entry.travelVh / 100) * stickyHeight));
       const totalTravel = travelFirst + travels.reduce((sum, value) => sum + value, 0);
-      const travelled = Math.min(Math.max(-rect.top, 0), totalTravel);
+      const targetTravelled = Math.min(Math.max(-rect.top, 0), totalTravel);
+
+      if (currentTravelled < 0) {
+        currentTravelled = targetTravelled;
+      }
+      const delta = targetTravelled - currentTravelled;
+      const isSettled = Math.abs(delta) < 0.2;
+      if (isSettled) {
+        currentTravelled = targetTravelled;
+      } else {
+        currentTravelled += delta * 0.22;
+      }
+      const travelled = currentTravelled;
 
       let segment = 0;
       let segmentProgress = clamp01(travelled / travelFirst);
@@ -214,7 +223,7 @@ export function ScrollSequence({
       }
 
       if (
-        Math.abs(segmentProgress - progressBRef.current) > 0.0004 ||
+        Math.abs(segmentProgress - progressBRef.current) > 0.0002 ||
         segment !== Number(stage.dataset.segmentIndex ?? -1)
       ) {
         // Overlay state is derived from the overall journey: once the first
@@ -231,8 +240,9 @@ export function ScrollSequence({
         if (segment === 0) {
           applyCover(segmentProgress);
         }
-        if (segment < chain.length && !primed[segment] && segmentProgress > 0.55) {
+        if (segment < chain.length && !primed[segment] && segmentProgress > 0.25) {
           loaders[segment + 1].preloadCritical();
+          loaders[segment + 1].requestFocus(0);
           primed[segment] = true;
         }
         render(segment, segmentProgress);
@@ -241,8 +251,10 @@ export function ScrollSequence({
         idleFrames += 1;
       }
 
-      // Stop the loop once the scene is at rest, restart on the next scroll.
-      if (idleFrames < 12) raf = requestAnimationFrame(tick);
+      // Keep RAF running smoothly until target scroll position is fully reached
+      if (!isSettled || idleFrames < 12) {
+        raf = requestAnimationFrame(tick);
+      }
     };
 
     const kick = () => {

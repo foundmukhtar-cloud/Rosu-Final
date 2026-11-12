@@ -29,6 +29,7 @@ import {
   valuationMethod,
 } from './lib/content';
 import { assetUrl, frameUrl, type Sequence } from './lib/frames';
+import { globalImageCache } from './lib/loader';
 import {
   gallery,
   heroUad,
@@ -454,14 +455,19 @@ function Closing({ onRequest }: { onRequest: () => void }) {
 
 function preloadAsset(url: string): Promise<boolean> {
   return new Promise((resolve) => {
-    const img = new Image();
-    img.src = url;
-    if (img.complete && img.naturalWidth > 0) {
+    const cached = globalImageCache.get(url);
+    if (cached && cached.complete && cached.naturalWidth > 0) {
       resolve(true);
       return;
     }
-    img.onload = () => resolve(true);
+    const img = new Image();
+    img.decoding = 'async';
+    img.onload = () => {
+      globalImageCache.set(url, img);
+      resolve(true);
+    };
     img.onerror = () => resolve(false);
+    img.src = url;
   });
 }
 
@@ -510,9 +516,9 @@ export default function App() {
     // Lock scrolling while assets load so first scroll is smooth
     document.body.style.overflow = 'hidden';
 
-    // Collect initial critical frames: opening 36 frames of heroUad + sequence posters
+    // Collect initial critical frames: opening 60 frames of heroUad + sequence posters
     const criticalUrls: string[] = [];
-    const preloadCount = Math.min(36, heroUad.frameCount);
+    const preloadCount = Math.min(60, heroUad.frameCount);
     for (let i = 0; i < preloadCount; i += 1) {
       criticalUrls.push(frameUrl(heroUad, i));
     }
@@ -546,7 +552,7 @@ export default function App() {
     }, 4500);
 
     let index = 0;
-    const concurrency = 6;
+    const concurrency = 8;
     const loadNext = async () => {
       while (index < total && !cancelled) {
         const currentIndex = index++;
